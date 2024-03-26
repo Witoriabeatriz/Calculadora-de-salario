@@ -1,102 +1,163 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de Salário</title>
+    <link rel="stylesheet" href="style.css">
     <style>
-        /* Estilos para centralizar a div na página */
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
+     body {
+            background-color: #003664;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            padding: 20px;
         }
-        .container {
-            width: 50%;
+
+        img {
+            width: 400px;
+            margin: auto;
+            display: block;
+        }
+
+        h2 {
             text-align: center;
         }
-        table {
-            margin: 0 auto; /* Centraliza a tabela dentro da div */
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #002147;
+            padding: 20px;
+            border-radius: 10px;
         }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ffffff;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="submit"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .result {
+            background-color: #002147;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            color: #ffffff;
+        }
+
+        .result p {
+            margin: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            color: #ffffff;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ffffff;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+
     </style>
 </head>
 <body>
+<img src="images/logos.jpg" alt="Notebook">
 
-<div class="container">
     <h2>Calculadora de Salário</h2>
-
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-        <label for="vendas_semanais">Valor das vendas semanais:</label>
-        <input type="text" name="vendas_semanais" id="vendas_semanais">
-        <input type="submit" name="submit" value="Calcular">
+        <label for="nome">Nome do Funcionário:</label><br>
+        <input type="text" id="nome" name="nome" required><br><br>
+       
+        <label for="semana1">Venda Semanal (Semana 1):</label><br>
+        <input type="number" id="semana1" name="semana1" required><br><br>
+       
+        <label for="semana2">Venda Semanal (Semana 2):</label><br>
+        <input type="number" id="semana2" name="semana2" required><br><br>
+       
+        <label for="semana3">Venda Semanal (Semana 3):</label><br>
+        <input type="number" id="semana3" name="semana3" required><br><br>
+       
+        <label for="semana4">Venda Semanal (Semana 4):</label><br>
+        <input type="number" id="semana4" name="semana4" required><br><br>
+       
+        <label for="total_mes">Total de Vendas no Mês:</label><br>
+        <input type="number" id="total_mes" name="total_mes" required><br><br>
+       
+        <input type="submit" value="Calcular Salário">
     </form>
 
     <?php
-    // Definição das constantes com os novos valores do Piso Regional do Paraná
-    define('SALARIO_MINIMO_PR', 1856.94); // Novo salário mínimo regional do Paraná
-    define('META_SEMANAL', 20000); // Meta de vendas semanal
-    define('META_MENSAL', 80000); // Meta de vendas mensal
-
-    // Função para calcular o salário final de um(a) vendedor(a) com base nas novas regras do Piso Regional do Paraná
-    function calcularSalario($vendas_semanais) {
-        // Verifica se as vendas semanais atingiram a meta
-        if ($vendas_semanais >= META_SEMANAL) {
-            // Calcula o excedente das vendas semanais em relação à meta
-            $excedente_semanal = $vendas_semanais - META_SEMANAL;
-
-            // Calcula o bônus do cumprimento da meta semanal (1% do valor da meta semanal)
-            $bonus_meta_semanal = 0.01 * META_SEMANAL;
-
-            // Calcula o bônus do excedente das vendas semanais (5% do excedente)
-            $bonus_excedente_semanal = 0.05 * $excedente_semanal;
-
-            // Verifica se as vendas mensais também atingiram a meta
-            if ($vendas_semanais * 4 >= META_MENSAL) {
-                // Calcula o excedente das vendas mensais em relação à meta
-                $excedente_mensal = $vendas_semanais * 4 - META_MENSAL;
-
-                // Calcula o bônus do excedente das vendas mensais (10% do excedente)
-                $bonus_excedente_mensal = 0.10 * $excedente_mensal;
-
-                // Calcula o salário final considerando o salário mínimo regional do Paraná
-                $salario_final = SALARIO_MINIMO_PR + $bonus_meta_semanal + $bonus_excedente_semanal + $bonus_excedente_mensal;
-            } else {
-                // Calcula o salário final sem o bônus do excedente mensal
-                $salario_final = SALARIO_MINIMO_PR + $bonus_meta_semanal + $bonus_excedente_semanal;
-            }
-        } else {
-            // Se as vendas semanais não atingiram a meta, o vendedor recebe apenas o salário mínimo regional do Paraná
-            $salario_final = SALARIO_MINIMO_PR;
-        }
-
-        // Retorna o salário final
-        return $salario_final;
-    }
-
-    // Verifica se o formulário foi enviado
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Verifica se o campo de vendas semanais foi preenchido
-        if (!empty($_POST["vendas_semanais"])) {
-            // Obtém o valor das vendas semanais do formulário
-            $vendas_semanais = $_POST["vendas_semanais"];
+        // Verifica se todos os campos foram preenchidos
+        if (isset($_POST['nome'], $_POST['semana1'], $_POST['semana2'], $_POST['semana3'], $_POST['semana4'], $_POST['total_mes'])) {
+            // Recebendo os dados do formulário
+            $nome = htmlspecialchars($_POST['nome']);
+            $semana1 = $_POST['semana1'];
+            $semana2 = $_POST['semana2'];
+            $semana3 = $_POST['semana3'];
+            $semana4 = $_POST['semana4'];
+            $total_mes = $_POST['total_mes'];
+            
+            // Definindo os valores e percentuais
+            $salario_minimo = 1856.94;
+            $meta_semanal = 20000; // Meta semanal
+            $meta_mensal = 80000; // Meta mensal
+            
+            // Inicializando as bonificações
+            $bonificacao_semanal = 0;
+            $bonificacao_mensal = 0;
+            
+            // Calculando a bonificação sobre o valor das vendas de cada semana
+            if (($semana1 >= $meta_semanal) && ($semana2 >= $meta_semanal) && ($semana3 >= $meta_semanal) && ($semana4 >= $meta_semanal)) {
+                $bonificacao_semanal = ($semana1 + $semana2 + $semana3 + $semana4) * 0.05;
+            }
+            
+            // Calculando a bonificação sobre o valor total de vendas no mês
+            if ($total_mes >= $meta_mensal) {
+                $bonificacao_mensal = $total_mes * 0.1;
+            }
 
-            // Calcula o salário final com base no valor das vendas semanais
-            $salario = calcularSalario($vendas_semanais);
+            // Calculating the salary
+            $salario = $salario_minimo + $bonificacao_semanal + $bonificacao_mensal;
 
-            // Exibe o resultado em formato de tabela
+            // Displaying the result
+            echo "<div class='result'>";
             echo "<h3>Resultado:</h3>";
-            echo "<table border='1'>";
-            echo "<tr><th>Vendas Semanais</th><th>Salário Mínimo Regional</th><th>Meta Semanal</th><th>Meta Mensal</th><th>Salário Final</th></tr>";
-            echo "<tr><td>$vendas_semanais</td><td>R$ " . number_format(SALARIO_MINIMO_PR, 2, ',', '.') . "</td><td>R$ " . number_format(META_SEMANAL, 2, ',', '.') . "</td><td>R$ " . number_format(META_MENSAL, 2, ',', '.') . "</td><td>R$ " . number_format($salario, 2, ',', '.') . "</td></tr>";
-            echo "</table>";
-        } else {
-            // Se o campo de vendas semanais estiver vazio, exibe uma mensagem de erro
-            echo "<p>Por favor, preencha o valor das vendas semanais.</p>";
+            echo "<p>Nome do Funcionário: $nome</p>";
+            echo "<p>Salário: R$ $salario</p>";
+            echo "</div>";
         }
     }
     ?>
-
-</div>
-
 </body>
 </html>
