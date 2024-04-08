@@ -37,19 +37,19 @@
         input[type="text"],
         input[type="number"],
         input[type="submit"] {
-            width: calc(100% - 20px);
+            width: calc(100% - 20px); /* Alterado para deixar espaço para a margem */
             padding: 8px;
             margin-bottom: 10px;
             border: none;
             border-radius: 5px;
             font-family: Arial, sans-serif;
-            margin-right: 10px;
+            margin-right: 10px; /* Adicionado espaçamento à direita */
         }
         input[type="submit"] {
             background-color: #4CAF50;
             color: white;
             cursor: pointer;
-            margin-right: 0;
+            margin-right: 0; /* Removido o espaçamento à direita do botão de envio */
         }
         input[type="submit"]:hover {
             background-color: #45a049;
@@ -89,6 +89,7 @@
 
     <?php
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Definindo as metas semanais e mensais
         $meta_semanal = 1000;
         $meta_mensal = 4000;
 
@@ -107,22 +108,28 @@
             if ($semana1 >= $meta_semanal && $semana2 >= $meta_semanal && $semana3 >= $meta_semanal && $semana4 >= $meta_semanal) {
                 $bonificacao_semanal = ($semana1 + $semana2 + $semana3 + $semana4) * 0.05;
             }
+
             if ($total_mes >= $meta_mensal) {
                 $bonificacao_mensal = $total_mes * 0.1;
             }
+
+            // Calculando o salário
             $salario = $salario_minimo + $bonificacao_semanal + $bonificacao_mensal;
+
+            // Saída do salário
             echo "<div class='result'>";
             echo "<h3>Resultado:</h3>";
             echo "<p>Nome do Funcionário: $nome</p>";
-            echo "<p>Salário: R$ " . number_format($salario, 2, ',', '.') . "</p>"; 
+            echo "<p>Salário: R$ " . number_format($salario, 2, ',', '.') . "</p>"; // Formatação para moeda brasileira
             echo "</div>";
         }
     }
     ?>
+    
     <script>
         function formatarMoeda(input) {
-            var valor = input.value.replace(/\D/g, '');
-            var valorFormatado = (parseInt(valor) / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            var valor = input.value.replace(/\D/g, ''); // Remove caracteres não numéricos
+            var valorFormatado = (parseInt(valor) / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); // Formata para moeda brasileira
             input.value = valorFormatado;
         }
     </script>
