@@ -2,100 +2,87 @@
 <html>
 <head>
     <title>Calculadora de Salário</title>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+        crossorigin="anonymous">
+    <script src='Login.js'></script>
+    <link rel="stylesheet" href="Campeonato.css">
     <style>
-        /* Estilos para centralizar a div na página */
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            background: linear-gradient(to bottom right, #FFD8E2, #B0E0E6);
         }
+
+        .imagem {
+            background-color: #003664;
+            text-align: center;
+        }
+
+        img {
+            width: 400px;
+            margin: auto;
+            display: block;
+        }
+
         .container {
             width: 50%;
             text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
         }
+
+        label {
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
         table {
-            margin: 0 auto; /* Centraliza a tabela dentro da div */
+            width: 100%;
         }
     </style>
 </head>
 <body>
 
+<div class="imagem">
+    <br>
+    <img src="logos.jpg" alt="Notbook">
+</div>
 <div class="container">
-    <h2>Calculadora de Salário</h2>
-
-    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-        <label for="vendas_semanais">Valor das vendas semanais:</label>
-        <input type="text" name="vendas_semanais" id="vendas_semanais">
-        <input type="submit" name="submit" value="Calcular">
-    </form>
-
-    <?php
-    // Definição das constantes com os novos valores do Piso Regional do Paraná
-    define('SALARIO_MINIMO_PR', 1856.94); // Novo salário mínimo regional do Paraná
-    define('META_SEMANAL', 20000); // Meta de vendas semanal
-    define('META_MENSAL', 80000); // Meta de vendas mensal
-
-    // Função para calcular o salário final de um(a) vendedor(a) com base nas novas regras do Piso Regional do Paraná
-    function calcularSalario($vendas_semanais) {
-        // Verifica se as vendas semanais atingiram a meta
-        if ($vendas_semanais >= META_SEMANAL) {
-            // Calcula o excedente das vendas semanais em relação à meta
-            $excedente_semanal = $vendas_semanais - META_SEMANAL;
-
-            // Calcula o bônus do cumprimento da meta semanal (1% do valor da meta semanal)
-            $bonus_meta_semanal = 0.01 * META_SEMANAL;
-
-            // Calcula o bônus do excedente das vendas semanais (5% do excedente)
-            $bonus_excedente_semanal = 0.05 * $excedente_semanal;
-
-            // Verifica se as vendas mensais também atingiram a meta
-            if ($vendas_semanais * 4 >= META_MENSAL) {
-                // Calcula o excedente das vendas mensais em relação à meta
-                $excedente_mensal = $vendas_semanais * 4 - META_MENSAL;
-
-                // Calcula o bônus do excedente das vendas mensais (10% do excedente)
-                $bonus_excedente_mensal = 0.10 * $excedente_mensal;
-
-                // Calcula o salário final considerando o salário mínimo regional do Paraná
-                $salario_final = SALARIO_MINIMO_PR + $bonus_meta_semanal + $bonus_excedente_semanal + $bonus_excedente_mensal;
-            } else {
-                // Calcula o salário final sem o bônus do excedente mensal
-                $salario_final = SALARIO_MINIMO_PR + $bonus_meta_semanal + $bonus_excedente_semanal;
-            }
-        } else {
-            // Se as vendas semanais não atingiram a meta, o vendedor recebe apenas o salário mínimo regional do Paraná
-            $salario_final = SALARIO_MINIMO_PR;
-        }
-
-        // Retorna o salário final
-        return $salario_final;
-    }
-
-    // Verifica se o formulário foi enviado
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Verifica se o campo de vendas semanais foi preenchido
-        if (!empty($_POST["vendas_semanais"])) {
-            // Obtém o valor das vendas semanais do formulário
-            $vendas_semanais = $_POST["vendas_semanais"];
-
-            // Calcula o salário final com base no valor das vendas semanais
-            $salario = calcularSalario($vendas_semanais);
-
-            // Exibe o resultado em formato de tabela
-            echo "<h3>Resultado:</h3>";
-            echo "<table border='1'>";
-            echo "<tr><th>Vendas Semanais</th><th>Salário Mínimo Regional</th><th>Meta Semanal</th><th>Meta Mensal</th><th>Salário Final</th></tr>";
-            echo "<tr><td>$vendas_semanais</td><td>R$ " . number_format(SALARIO_MINIMO_PR, 2, ',', '.') . "</td><td>R$ " . number_format(META_SEMANAL, 2, ',', '.') . "</td><td>R$ " . number_format(META_MENSAL, 2, ',', '.') . "</td><td>R$ " . number_format($salario, 2, ',', '.') . "</td></tr>";
-            echo "</table>";
-        } else {
-            // Se o campo de vendas semanais estiver vazio, exibe uma mensagem de erro
-            echo "<p>Por favor, preencha o valor das vendas semanais.</p>";
-        }
-    }
-    ?>
-
+    <br>
+    <label id="Nome">Nome do vendedor:</label>
+    <input class="form-control" id="Participantes" type="text">
+    <br><br>
+    <label id="MetaSemanal">Meta Semanal:</label>
+    <input class="form-control" id="MetaSemanalInput" type="number">
+    <br><br>
+    <label id="MetaMensal">Meta Mensal:</label>
+    <input class="form-control" id="MetaMensalInput" type="number">
+    <br><br>
+    <!--<input class="form-control" id="Sexo" type="text"> -->
+    <button class="btn btn-primary" type="button" onclick="salvarUser()">Salvar</button>
+    <br><br>
+</div> <br>
+<div class="container">
+    <table class="table table-striped" id="tabela">
+        <tr>
+            <th>Nome do vendedor</th>
+            <th>Meta Semanal</th>
+            <th>Meta Mensal</th>
+            <th>Ações</th>
+        </tr>
+    </table>
 </div>
 
 </body>
